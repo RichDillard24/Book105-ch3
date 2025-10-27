@@ -4,24 +4,22 @@
 //
 //  Created by Richard Dillard on 10/20/25.
 //
-
 import SwiftUI
+
 struct BookListItem: View {
-    @Binding var book : Book
+    let bookInList: Book
     
     var body: some View {
-        HStack {
-            Image(book.image ?? "defualt book")
+        HStack{
+            Image(bookInList.image ?? "default_book") // ??: is called nullish coalescing operator
                 .resizable()
                 .frame(width: 50, height: 70)
             VStack(alignment: .leading) {
-                Text(book.title)
-                Text(book.author ?? "Annonymous")
-                    .font(.caption)
+                Text(bookInList.title)
+                Text(bookInList.author  != "" ? bookInList.author : "Anonymous")
+                    .font(.system(size: 12))
                     .foregroundColor(.secondary)
             }
-               
         }
     }
-    
 }
