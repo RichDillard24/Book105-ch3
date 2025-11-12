@@ -13,6 +13,10 @@ struct CustomeCapsule: View {
     let text: String
     var color: Color = .accentColor
     
+    init(_ text:String, color: Color = .accentColor.opacity(0.5)){
+        self.text = text
+        self.color = color
+    }
     var body: some View {
         Text(text)
             .font(.caption)

@@ -30,6 +30,7 @@ struct FavoriteToggle: View {
             .toggleStyle(.button)
             .buttonStyle(.plain)
             .animation(.spring, value: isFavorite)
+            .accessibilityLabel(isFavorite ? "Remove from favorites" : "Add to favorites"   )
             .onChange(of: isFavorite){oldValue, newValue in
                 guard newValue else { return }
                 withAnimation(.spring(response:0.5, dampingFraction: 0.4)){

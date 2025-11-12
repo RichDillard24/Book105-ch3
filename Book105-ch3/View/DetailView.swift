@@ -8,60 +8,79 @@ import SwiftUI
 
 struct DetailView: View {
     
-    @Binding var book: Book
+    @State
+    
+    
+    var book: PersistentBook
+    @State var isFavorite: Bool
     @State private var showEditSheet: Bool = false
     
+    @Environment(\.modelContext) private var modelContext
+    
+    init(book: PersistentBook){
+        self.book = book
+        isFavorite = book.isFavorite
+    }
     var body: some View {
         ScrollView {
-           
-            VStack(alignment: .leading, spacing: 20) {
+            VStack (alignment: .leading, spacing: 20){
                 HStack{
-                    Image(book.image)
+                    Image(uiImage:
+                            (book.imageData != nil ? UIImage(data: book.imageData!) :
+                                UIImage(resource: .defaultBook))!
+                          )                    // Colescing operator (?? ) if left side is nil do the right sside
                         .resizable()
                         .scaledToFit()
                         .frame(width: 100, height: 150)
                         .padding(.vertical, 20)
                     VStack{
-                        Text("\(book.title)")
+                        Text(book.title)
                             .font(.system(size: 36, weight: .bold, design: .serif))
-                        Text("by \(book.author)")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                        Text("Genre: \(book.genre.rawValue)")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                        if(book.author != ""){
+                            Text("by \(book.author)")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            Text("Genre: \(book.genre.rawValue)")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
                 HStack{
                     
-                
-                CustomeCapsule(text: book.readingStatus.rawValue, color: .accentColor.opacity(0.5))
+                    
+                    CustomeCapsule(book.readingStatus.rawValue)
                     Spacer()
-                    FavoriteToggle(isFavorite: $book.isFavorite)
-                }
-                VStack{
-                        Text(book.description != "" ? book.description: "No description")
-                        if(book.review != "" || book.rating > 0){
-                            Text("Review")
-                                .font(.title3)
-                            if(book.rating > 0){
-                                Text("Rating: \(book.rating) \(book.rating > 1 ? "stars" : "Star")")
-                            }
-                        }
+                    //Text(book.description != "" ? book.description : "No description")
+                    FavoriteToggle(isFavorite: $isFavorite)
+                        .onChange(of: isFavorite){
+                            book.isFavorite = isFavorite
+                            try? modelContext.save()
                     }
-                
-                    Text(book.review != "" ? book.review: "No review yet")
-              
+                }
+                    
+                Text(book.summary != "" ? book.summary: "No description")
+                    // Ternary operator (? :) if logical check is true, do after"?" else do after the ""
+                // logical operator
+                if(book.review != "" || book.rating > 0){
+                    Text("My Review").font(.subheadline)
+                    if(book.rating > 0){
+                        CustomeCapsule("Rating: \(book.rating) \(book.rating > 1 ? "stars" : "star")")
+                    }
+                    Text(book.review != "" ? book.review : "No review yet")
+                }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 16)
         }
-        .navigationTitle("Details") //Sets a title
-        .navigationBarTitleDisplayMode(.inline) // Changes the title to be smaller
-        .navigationBarItems(trailing: Button("Edit", action: {
-            showEditSheet.toggle()
-        }))// sets a button on the top right corner with the text "Edit"
-        .sheet(isPresented: $showEditSheet, content: {
-            AddEditBookView(book: $book)
-        })  // presents a sheet whenever "$showEditSheet" is "true"
+        .navigationTitle(book.title) // sets title
+        .navigationBarTitleDisplayMode(.inline) // Changes the title to be smallar
+        .navigationBarItems(trailing: Button("Edit", action: {showEditSheet.toggle()})) /// sets button on the top right corner with the text edit
+        .sheet(
+            isPresented: $showEditSheet,
+            content: {
+                AddEditBookView(book: book, modelContext: modelContext)
+            }
+        )// Show sheet whenever $showEdsitSheet is true
+       
     }
 }

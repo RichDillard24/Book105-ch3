@@ -1,31 +1,46 @@
-//
-//  ContentView.swift
-//  Book105-ch3
-//
-//  Created by Richard Dillard on 10/15/25.
-//
-
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @AppStorage(SETTINGS_THEME_KEY) var theme: Theme = SETTINGS_THEME_DEFAULT_VALUE
+    @AppStorage(SETTINGS_ACCENT_COLOR_KEY) private var accentTintColor: Color = SETTINGS_ACCENT_COLOR_DEFAULT_VALUE
     
-    @State var books: [Book] = getBooks()
+    //@State var books: [Book] = getBooks()
+    
+
+    var colorScheme: ColorScheme? {
+        switch(theme) {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        case .system:
+            return nil
+        }
+    }
     
     var body: some View {
         TabView {
-            BookListView(books: $books)
+            BookListView()
                 .tabItem {
-                    Label("books", systemImage: "books.vertical.fill")
+                    Label("Books", systemImage: "books.vertical.fill")
                 }
-            FavoritesView(books: $books)
+//            FavoritesView(books: $books)
+//                .tabItem {
+//                    Label("Favorites", systemImage: "heart.fill")
+//                }
+            SettingsView()
                 .tabItem {
-                    Label("Favorites", systemImage: "heart.fill")
+                    Label("Settings", systemImage: "gearshape.fill")
                 }
+                
         }
-       
+        .preferredColorScheme(colorScheme)
+        //add this only if time to add the color
+        .tint(accentTintColor)
     }
 }
+
 #Preview {
     ContentView()
 }

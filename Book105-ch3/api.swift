@@ -7,29 +7,46 @@
 
 func getBooks() -> [Book] {
     return [
-        Book(
-            title:"The Fellowship of the Ring",
-            author:"J.R.R. Tolkien",
-            image: "lotr_fellowship",
-            description: "The Fellowship of the Ring is the first book in the trilogy of the LORD OF THE RINGS high-fantasy trilogy written by J.R.R Tolkien.",
-            isFavorite: true
+    Book(
+        title: "The Fellowship of the Ring",
+        author: "J.R.R. Tolkien",
+        image: "lotr_fellowship",
+        description: "Consider the positioning of the toggle—place it in a convenient location (e.g., bottom of the screen) and style it to fit the app’s design. Think about adding color contrast for better visibility and ease of use.",
+        //isFavorite: true,
+        readingStatus: .finished,
+        genre: .biography,
+        isFavorite: true,
+    ),
+    Book(
+        title: "The Two Towers",
+        author: "J.J.R Tolkien",
+        image: "lotr_towers",
+        description: "Consider the positioning of the toggle—place it in a convenient location (e.g., bottom of the screen) and style it to fit the app’s design. Think about adding color contrast for better visibility and ease of use.",
+        //isFavorite: true,
+        readingStatus: .finished,
+        genre: .biography,
+        isFavorite: true,
+    ),
+    Book(
+        title: "Return of the King",
+        author: "J.R.R. Tolkien",
+        image: "lotr_king",
+        description: "Consider the positioning of the toggle—place it in a convenient location (e.g., bottom of the screen) and style it to fit the app’s design. Think about adding color contrast for better visibility and ease of use.",
+       // isFavorite: true,
+        readingStatus: .finished,
+        genre: .biography,
+        isFavorite: true,
+      
+        
         ),
-        Book(
-            title:"The Two Towers",
-            author:"J.R.R. Tolkien",
-            image: "lotr_towers",
-            description:" The Two Towers is the second book in J.R.R Tolkien's high-fantasy trilogy, The Lord of the Rings.",
-            isFavorite: false
-        ),
-        Book(
-            title:"The Return of the King",
-            author:"J.R.R. Tolkien",
-            image: "lotr_king",
-            description: "The Return of the King is the third and final book in J.R.R Tolkien's high-fantasy trilogy, The Lord of the Rings.",
-            isFavorite: true
-        ),
-        Book(
-            title:"Test book",
-        )
+    Book(
+        title: "Harry Porter",
+        //isFavorite: true,
+        readingStatus: .finished,
+        genre: .biography,
+        isFavorite: true,
+    )
+    
+        
     ]
 }
